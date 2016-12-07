@@ -1,2 +1,2 @@
 # foodfinder
-Find you best recipe with what you have at home!
+Find your best recipe with what you have at home!
