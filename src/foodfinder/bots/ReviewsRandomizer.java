@@ -51,11 +51,13 @@ public class ReviewsRandomizer {
 		
 		Map<Integer, Recipe> recipes = getRecipes(reviews);
 		
+		skipTill(recipes, 34061);
+		
 		for (Entry<Integer, Recipe> recipe : recipes.entrySet()) {
 			
 			int recipeId = recipe.getKey();
 			
-			int size = getRandomNumber(2000, 30000);
+			int size = getRandomNumber(19, 20);
 			int start = getRandomNumber(0, users.size() - size - 1);
 			
 			for (int i = start; i < (start + size + 1); i++) {
@@ -112,9 +114,23 @@ public class ReviewsRandomizer {
 		
 		return id;
 	}
-	
+
 	private int getRandomNumber(int min, int max) {
 		return random.nextInt(max - min + 1) + min;
+	}
+	
+	// Temp method
+	private void skipTill(Map<Integer, Recipe> recipes, int key) {
+		
+		int currentKey = -1;
+		
+		do {
+			Entry<Integer, Recipe> entry = recipes.entrySet().iterator().next();
+			currentKey = entry.getKey();
+			recipes.remove(currentKey);
+		
+		} while (currentKey != key);
+		
 	}
 	
 }

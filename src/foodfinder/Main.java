@@ -17,9 +17,9 @@ public class Main {
 
 	public static void main(String[] args) {
 		
-		ReviewsRandomizer randomizer = new ReviewsRandomizer();
+		//ReviewsRandomizer randomizer = new ReviewsRandomizer();
 		
-		randomizer.run();
+		//randomizer.run();
 		
 		//UsersSimilaritiesCalculator simCalculator = new UsersSimilaritiesCalculator();
 		//simCalculator.calculate();

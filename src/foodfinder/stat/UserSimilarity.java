@@ -46,9 +46,8 @@ public class UserSimilarity {
 			return 0;
 		
 		// if they have only 1 recipe in common
-		// TODO: we should change this
 		if (commonRecipes.size() == 1) {
-			return 0.5;
+			return 0.0;
 		}
 		
 		int size = commonRecipes.size();
@@ -61,6 +60,9 @@ public class UserSimilarity {
 			y[i] = user2RatedRecipes.get(commonRecipes.get(i));
 		}
 		
+		distinct(x);
+		distinct(y);
+		
 		double correlation = new PearsonsCorrelation().correlation(x, y);
 		
 		return correlation;
@@ -72,7 +74,7 @@ public class UserSimilarity {
 		
 		for (Entry<Integer, Integer> entry1 : user1.entrySet()) {
 			for (Entry<Integer, Integer> entry2 : user2.entrySet()) {
-				if (entry1.getKey() == entry2.getKey())
+				if (entry1.getKey().equals(entry2.getKey()))
 					commonRecipes.add(entry1.getKey());
 			}
 		}
@@ -92,6 +94,24 @@ public class UserSimilarity {
 		}
 		
 		return ratedRecipes;
+	}
+	
+	private void distinct(double[] x) {
+		
+		boolean distinced = false;
+		
+		for (int i = 0; i < x.length; i++) {
+			if (x[i] != x[0]) {
+				distinced = true;
+				break;
+			}
+		}
+		
+		if (!distinced) {
+			x[0] += x[0] == 1 ? 1 : -1;
+			//x[x.length - 1] += x[x.length - 1] == 5 ? -2 : 1;
+		}
+		
 	}
 	
 }

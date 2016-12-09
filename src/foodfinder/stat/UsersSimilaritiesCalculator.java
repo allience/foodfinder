@@ -43,6 +43,7 @@ public class UsersSimilaritiesCalculator {
 		Map<Integer, List<Integer>> done = new HashMap<Integer, List<Integer>>();
 		
 		int count = 0;
+		List<Object> values = new ArrayList<Object>();
 		
 		//for (Entry<Integer, Integer> user1Entry : users.entrySet()) {
 			
@@ -72,7 +73,7 @@ public class UsersSimilaritiesCalculator {
 				
 				done.get(user1.getId()).add(user2.getId());
 				
-				List<Object> values = new ArrayList<Object>();
+				values.clear();
 				values.add(user1.getId());
 				values.add(user2.getId());
 				values.add(correlation);
