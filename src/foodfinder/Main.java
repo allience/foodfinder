@@ -5,34 +5,30 @@
 package foodfinder;
 
 import java.util.ArrayList;
-import java.util.List;
-
-import foodfinder.bots.ReviewsRandomizer;
+import foodfinder.data.Ingredient;
 import foodfinder.data.Recipe;
+import foodfinder.data.TestData;
 import foodfinder.data.User;
-import foodfinder.recommender.UserBasedRecommender;
-import foodfinder.stat.UsersSimilaritiesCalculator;
+import foodfinder.recommender.ItemBasedRecommender;
 
 public class Main {
 
 	public static void main(String[] args) {
 		
-		//ReviewsRandomizer randomizer = new ReviewsRandomizer();
+		TestData testData = new TestData();
 		
-		//randomizer.run();
+		//get our test user
+		User user = testData.GetTestUser();
 		
-		//UsersSimilaritiesCalculator simCalculator = new UsersSimilaritiesCalculator();
-		//simCalculator.calculate();
+		//get the list of recipes eaten by our user (history)
+		ArrayList<Recipe> userHistory = testData.GetTestUserHistory();
 		
-		//User user = new User(985729);
+		//get the ingredients that he has. [Onion, Potato, Tomato]
+		ArrayList<Ingredient> userIngredients = testData.GetTestUserIngredients();
 		
-		//List<Recipe> recipes = new ArrayList<Recipe>();
-		//recipes.add(new Recipe(220));
-		//recipes.add(new Recipe(749));
+		ItemBasedRecommender itRec = new ItemBasedRecommender(userIngredients);
+		itRec.recommend(user, userHistory);
 		
-		//UserBasedRecommender userBased = new UserBasedRecommender();
-		//userBased.recommend(user, recipes);
-
 	}
 
 }

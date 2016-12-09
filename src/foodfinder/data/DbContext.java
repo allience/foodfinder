@@ -7,6 +7,7 @@ package foodfinder.data;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
@@ -15,7 +16,6 @@ import java.util.List;
 import java.util.Map;
 
 import com.mysql.jdbc.DatabaseMetaData;
-import com.mysql.jdbc.ResultSetMetaData;
 
 public class DbContext {
 
@@ -124,6 +124,34 @@ public class DbContext {
 			closeResult(result);
 		}
 		
+		return data;
+	}
+	
+	
+	public List<Map<String, Object>> CustomQuery(String query){
+		ResultSet result = null;
+		List<Map<String, Object>> data = new ArrayList<Map<String, Object>>();
+		try {
+			
+			result = statement.executeQuery(query);
+			ResultSetMetaData rsmd = result.getMetaData(); 
+			
+			while (result.next()) {
+				
+				Map<String, Object> tuple = new HashMap<String, Object>();
+				
+				for (int i = 1; i <= rsmd.getColumnCount(); i++) {
+					tuple.put(rsmd.getColumnName(i), result.getObject(rsmd.getColumnName(i)));
+				}
+				data.add(tuple);
+			}
+			
+			
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+		} finally {
+			closeResult(result);
+		}
 		return data;
 	}
 	
