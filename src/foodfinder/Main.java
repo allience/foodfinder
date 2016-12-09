@@ -4,11 +4,29 @@
 
 package foodfinder;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import foodfinder.data.Recipe;
+import foodfinder.data.User;
+import foodfinder.recommender.UserBasedRecommender;
+import foodfinder.stat.UsersSimilaritiesCalculator;
+
 public class Main {
 
 	public static void main(String[] args) {
 		
-		System.out.println("I'm working...");
+		UsersSimilaritiesCalculator simCalculator = new UsersSimilaritiesCalculator();
+		simCalculator.calculate();
+		
+		User user = new User(985729);
+		
+		List<Recipe> recipes = new ArrayList<Recipe>();
+		recipes.add(new Recipe(220));
+		recipes.add(new Recipe(749));
+		
+		UserBasedRecommender userBased = new UserBasedRecommender();
+		userBased.recommend(user, recipes);
 
 	}
 

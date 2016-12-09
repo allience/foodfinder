@@ -89,11 +89,11 @@ public class DbContext {
 		
 		StringBuilder query = new StringBuilder("SELECT ");
 		
-		for (int i = 0; i < cols.size(); i++) {
-			String col = cols.get(i);
+		for (int i = 0; i < columns.size(); i++) {
+			String col = columns.get(i);
 			
 			query.append("`" + col + "`");
-			query.append(i < cols.size() - 1 ? ", " : " ");
+			query.append(i < columns.size() - 1 ? ", " : " ");
 		}
 		
 		query.append("FROM `" + table + "`");

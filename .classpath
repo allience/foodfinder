@@ -3,5 +3,6 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="/home/netbook/Documents/Studies/Fouille de Données/Project/foodfinder/lib/mysql-connector-java-5.1.40-bin.jar"/>
+	<classpathentry kind="lib" path="/home/netbook/Documents/Studies/Fouille de Données/Project/foodfinder/lib/commons-math3-3.6.1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
