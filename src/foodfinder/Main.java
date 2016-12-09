@@ -7,6 +7,7 @@ package foodfinder;
 import java.util.ArrayList;
 import java.util.List;
 
+import foodfinder.bots.ReviewsRandomizer;
 import foodfinder.data.Recipe;
 import foodfinder.data.User;
 import foodfinder.recommender.UserBasedRecommender;
@@ -16,17 +17,21 @@ public class Main {
 
 	public static void main(String[] args) {
 		
-		UsersSimilaritiesCalculator simCalculator = new UsersSimilaritiesCalculator();
-		simCalculator.calculate();
+		ReviewsRandomizer randomizer = new ReviewsRandomizer();
 		
-		User user = new User(985729);
+		randomizer.run();
 		
-		List<Recipe> recipes = new ArrayList<Recipe>();
-		recipes.add(new Recipe(220));
-		recipes.add(new Recipe(749));
+		//UsersSimilaritiesCalculator simCalculator = new UsersSimilaritiesCalculator();
+		//simCalculator.calculate();
 		
-		UserBasedRecommender userBased = new UserBasedRecommender();
-		userBased.recommend(user, recipes);
+		//User user = new User(985729);
+		
+		//List<Recipe> recipes = new ArrayList<Recipe>();
+		//recipes.add(new Recipe(220));
+		//recipes.add(new Recipe(749));
+		
+		//UserBasedRecommender userBased = new UserBasedRecommender();
+		//userBased.recommend(user, recipes);
 
 	}
 
