@@ -26,12 +26,9 @@ public class TestData {
 	//a list that contains the ingredients owend by the user (test)
 	private List<Map<String, Object>> ingredientsResultList;
 	private RecipesService recipeService;
+	
 	private void Initialize(){
-		
 		recipeService = new RecipesService();
-		
-		
-		
 	}
 	
 	public TestData() {
