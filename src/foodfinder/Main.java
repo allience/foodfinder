@@ -13,12 +13,13 @@ import foodfinder.data.RecipeDetails;
 import foodfinder.data.TestData;
 import foodfinder.data.User;
 import foodfinder.recommender.ItemBasedRecommender;
+import foodfinder.recommender.RecommenderEngine;
 
 public class Main {
 
 	public static void main(String[] args) {
 		
-		TestData testData = new TestData();
+		/*TestData testData = new TestData();
 		//get our test user
 		User user = testData.GetTestUser();
 		
@@ -36,12 +37,15 @@ public class Main {
 		}
 		
 		ItemBasedRecommender itRec = new ItemBasedRecommender(userIngredients);
-		Map<Recipe, Double> recommendedRecipes = itRec.recommend(user, possibleRecipes);
-		
-		List<RecipeDetails> recommendedRecipesDetails = testData.GetRecipesDetailsFromRecipes(recommendedRecipes);
+		Map<Integer, Double> recommendedRecipes = itRec.recommend(user, possibleRecipes);
+		*/
+		/*List<RecipeDetails> recommendedRecipesDetails = testData.GetRecipesDetailsFromRecipes(recommendedRecipes);
 		for(RecipeDetails rcp : recommendedRecipesDetails){
 			System.out.println("id = "+rcp.id + " - title = " + rcp.title);
-		}
+		}*/
+		
+		RecommenderEngine engine = new RecommenderEngine();
+		engine.recommend();
 	}
 
 }

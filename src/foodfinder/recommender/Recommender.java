@@ -19,6 +19,6 @@ public interface Recommender {
 	 * @Input: A user and a list of recipes with the wanted ingredients
 	 * @Output: This method returns a list of recipes and their correlation values
 	 */
-	Map<Recipe, Double> recommend(User user, List<Recipe> recipes);
+	Map<Integer, Double> recommend(User user, List<Recipe> recipes);
 	
 }

@@ -66,9 +66,9 @@ public class RecipesSimilaritiesCalculator {
 	}
 	
 	
-	public Map<Recipe, Double> calculate2(DbContext ctx, Map<Integer, Map<String, Integer>> userHistory, Map<Integer, Map<String, Integer>> recipesIngredients) {
+	public Map<Integer, Double> calculate2(DbContext ctx, Map<Integer, Map<String, Integer>> userHistory, Map<Integer, Map<String, Integer>> recipesIngredients) {
 		
-		Map<Recipe, Double> userRecipesSimilarities = new HashMap<Recipe, Double>();
+		Map<Integer, Double> userRecipesSimilarities = new HashMap<Integer, Double>();
 		
 		RecipesService recipesSrv = new RecipesService();
 		
@@ -96,7 +96,7 @@ public class RecipesSimilaritiesCalculator {
 			
 			double average = n > 0 ? accumulation / n : 0.0;
 			
-			userRecipesSimilarities.put(new Recipe(recipeId), average);
+			userRecipesSimilarities.put(recipeId, average);
 		}
 		
 		

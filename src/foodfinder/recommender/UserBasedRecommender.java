@@ -34,7 +34,7 @@ public class UserBasedRecommender implements Recommender {
 	}
 	
 	@Override
-	public Map<Recipe, Double> recommend(User user, List<Recipe> recipes) {
+	public Map<Integer, Double> recommend(User user, List<Recipe> recipes) {
 		
 		recommenderDbCtx = new DbContext(Configuration.server, recommenderDb, Configuration.username, Configuration.password);
 		
@@ -63,7 +63,7 @@ public class UserBasedRecommender implements Recommender {
 		 */
 		
 		Map<Integer, Double> userSimilarities = usersService.getUserSimilarities(recommenderDbCtx, user, true);
-		Map<Recipe, Double> userRecipeSimilarities = new HashMap<Recipe, Double>();
+		Map<Integer, Double> userRecipeSimilarities = new HashMap<Integer, Double>();
 		
 		// loop through all the recipes
 		for (Entry<Recipe, List<Rating>> entry : recipesRatings.entrySet()) {
@@ -85,14 +85,14 @@ public class UserBasedRecommender implements Recommender {
 			
 			double average = commonUsers > 0 ? accumulation / commonUsers : 0.0;
 			
-			userRecipeSimilarities.put(recipe, average);
+			userRecipeSimilarities.put(recipe.getId(), average);
 			
 		}
 		
 		
 		recommenderDbCtx.dispose();
 		
-		userRecipeSimilarities = MapUtil.sortByValue(userRecipeSimilarities);
+		//userRecipeSimilarities = MapUtil.sortByValue(userRecipeSimilarities);
 		
 		return userRecipeSimilarities;
 	}

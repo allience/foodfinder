@@ -43,7 +43,7 @@ public class ItemBasedRecommender implements Recommender{
 	}
 	
 	@Override
-	public Map<Recipe, Double> recommend(User user, List<Recipe> possibleRecipes) {
+	public Map<Integer, Double> recommend(User user, List<Recipe> possibleRecipes) {
 		recommenderDbCtx = new DbContext(server, recommenderDb, username, password);
 		//List<Recipe> possibleRecipes = recipesService.GetRcipesByIngredients(recommenderDbCtx, userIngredients, false);
 		System.out.println(possibleRecipes.size());
@@ -59,7 +59,7 @@ public class ItemBasedRecommender implements Recommender{
 		RecipesSimilaritiesCalculator recipesSimilaritiesCalculator = new RecipesSimilaritiesCalculator();
 		
 		DbContext ctx = new DbContext(server, "foodfinderdb_matrices", username, password);
-		Map<Recipe, Double> userRecipesSimilarities = recipesSimilaritiesCalculator.calculate2(ctx, userHistoryRecipesIngredients, possibleRecipesIngredientsMatrice);
+		Map<Integer, Double> userRecipesSimilarities = recipesSimilaritiesCalculator.calculate2(ctx, userHistoryRecipesIngredients, possibleRecipesIngredientsMatrice);
 		
 		
 		
