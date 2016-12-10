@@ -18,28 +18,20 @@ public class TestData {
 	private DbContext dbContext;
 	
 	//this is a temporary hardcoded user id for test purposes
-	private int randomUserId = 75805;
+	private int userId = 140132;
 	
 	//a list that contains the recipes rated by our test user, and their ratings
 	private List<Map<String, Object>> userResultList;
 	
 	//a list that contains the ingredients owend by the user (test)
 	private List<Map<String, Object>> ingredientsResultList;
-	
+	private RecipesService recipeService;
 	private void Initialize(){
-		dbContext = new DbContext(server, recommenderDb, username, password);
-		userResultList = dbContext.selectQuery(
-				FoodFinderDbMatrices.Recipes_Users,
-				null, 
-				"user_id = "+randomUserId
-		);
 		
-		dbContext = new DbContext(server, dataDb, username, password);
-		ingredientsResultList = dbContext.selectQuery(
-				FoodFinderDb.Ingredients,
-				null, 
-				"title = 'Onion' OR title = 'Potato' Or title = 'Tomato'"
-		);
+		recipeService = new RecipesService();
+		
+		
+		
 	}
 	
 	public TestData() {
@@ -50,30 +42,24 @@ public class TestData {
 	//returns the test user
 	public User GetTestUser(){
 		User user = new User();
-		user.setId(randomUserId);
+		user.setId(userId);
 		return user;
 	}
 	
 	//
-	public ArrayList<Recipe> GetTestUserHistory(){
-		ArrayList<Recipe> userRatedRecipes = new ArrayList<Recipe>();
-		for(Map<String, Object> item : userResultList){
-			Recipe recipe = new Recipe();
-			recipe.setId(toIntExact((Long)item.get("recipe_id")));
-			userRatedRecipes.add(recipe);
-		}
-		return userRatedRecipes;
+	public List<Recipe> GetTestUserHistory(){
+		dbContext = new DbContext(server, recommenderDb, username, password);
+		return recipeService.GetUserHistory(dbContext, userId);
 	}
 	
 	//returns ingredient ids, not auto increment ids
-	public ArrayList<Ingredient> GetTestUserIngredients(){
-		ArrayList<Ingredient> ingredientsList = new ArrayList<Ingredient>();
-		for(Map<String, Object> item : ingredientsResultList){
-			Ingredient ingredient = new Ingredient();
-			ingredient.setId((Integer)item.get("ingred_id"));
-			ingredientsList.add(ingredient);
-		}
-		return ingredientsList;
+	public List<Ingredient> GetTestUserIngredients(){
+		dbContext = new DbContext(server, dataDb, username, password);
+		ArrayList<String> ingredients = new ArrayList<String>();
+		ingredients.add("Onion");
+		ingredients.add("Potato");
+		ingredients.add("Tomato");
+		return recipeService.GetIngredients(dbContext, ingredients);
 	}
 	
 }

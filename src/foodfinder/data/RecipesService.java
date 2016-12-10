@@ -1,4 +1,4 @@
-package foodfinder.recommender;
+package foodfinder.data;
 
 import static java.lang.Math.toIntExact;
 
@@ -7,14 +7,52 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import foodfinder.data.DbContext;
-import foodfinder.data.FoodFinderDb;
-import foodfinder.data.Ingredient;
-
 public class RecipesService {
 	
+	public List<Recipe> GetUserHistory(DbContext dbContext, int userId){
+		
+		List<Map<String, Object>> userResultList = dbContext.selectQuery(
+				FoodFinderDbMatrices.Recipes_Users,
+				null, 
+				"user_id = "+userId
+		);
+		
+		ArrayList<Recipe> userRatedRecipes = new ArrayList<Recipe>();
+		for(Map<String, Object> item : userResultList){
+			Recipe recipe = new Recipe();
+			recipe.setId(toIntExact((Long)item.get("recipe_id")));
+			userRatedRecipes.add(recipe);
+		}
+		return userRatedRecipes;
+	}
+	
+	
+	//returns ingredient ids, not auto increment ids
+	public List<Ingredient> GetIngredients(DbContext dbContext, List<String> ingredients){
+		StringBuilder condition = new StringBuilder();
+		for (int i = 0; i < ingredients.size(); i++) {
+			
+			condition.append("`title`");
+			condition.append(" = '" + ingredients.get(i) + "'");
+			condition.append(i < ingredients.size() - 1 ? " OR " : "");
+		}
+		List<Map<String, Object>> ingredientsResultList = dbContext.selectQuery(
+				FoodFinderDb.Ingredients,
+				null, 
+				condition.toString()
+		);
+		
+		ArrayList<Ingredient> ingredientsList = new ArrayList<Ingredient>();
+		for(Map<String, Object> item : ingredientsResultList){
+			Ingredient ingredient = new Ingredient();
+			ingredient.setId((Integer)item.get("ingred_id"));
+			ingredientsList.add(ingredient);
+		}
+		return ingredientsList;
+	}
+	
 	//call with IsExact->false to get all recipes that got at least 1 ingredient of the userIngredients
-	public List<Integer> GetRcipesByIngredients(DbContext recommenderDbCtx,List<Ingredient> userIngredients, boolean isExact){
+	public List<Integer> GetRcipesByIngredients(DbContext recommenderDbCtx, List<Ingredient> userIngredients, boolean isExact){
 		ArrayList<Integer> recipes = new ArrayList<Integer>();
 		String logicalOperator = isExact ? " AND " : " OR ";
 		List<String> cols = new ArrayList<String>();
