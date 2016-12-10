@@ -128,4 +128,38 @@ public class RecipesService {
 		
 		return recipesDetails;
 	}
+	
+	/*
+	 * Map<recipe1_id, Map<recipe2_id, correlation>>
+	 */
+	public Map<Integer, Map<Integer, Double>> getAllSimilarities(DbContext recommenderContext, boolean positive) {
+		
+		String condition = positive ? "`correlation` > 0": "";
+		
+		List<String> cols = new ArrayList<String>();
+		cols.add("recipe1_id");
+		cols.add("recipe2_id");
+		cols.add("correlation");
+		
+		List<Map<String, Object>> rawSimilarities = recommenderContext.selectQuery(FoodFinderDbMatrices.Recipes_Similarities, cols, condition);
+		
+		Map<Integer, Map<Integer, Double>> similarities = new HashMap<Integer, Map<Integer, Double>>();
+		
+		for (Map<String, Object> similarity : rawSimilarities) {
+			
+			int recipe1_id = Integer.parseInt(similarity.get("recipe1_id").toString());
+			int recipe2_id = Integer.parseInt(similarity.get("recipe2_id").toString());
+			double correlation = Double.parseDouble(similarity.get("correlation").toString());
+
+			if (!similarities.containsKey(recipe1_id)) {
+				similarities.put(recipe1_id, new HashMap<Integer, Double>());
+			}
+			
+			similarities.get(recipe1_id).put(recipe2_id, correlation);
+			
+		}
+		
+		return similarities;
+	}
+		
 }

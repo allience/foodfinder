@@ -59,7 +59,7 @@ public class ItemBasedRecommender implements Recommender{
 		RecipesSimilaritiesCalculator recipesSimilaritiesCalculator = new RecipesSimilaritiesCalculator();
 		
 		DbContext ctx = new DbContext(server, "foodfinderdb_matrices", username, password);
-		Map<Recipe, Double> userRecipesSimilarities = recipesSimilaritiesCalculator.calculate(ctx, userHistoryRecipesIngredients, possibleRecipesIngredientsMatrice);
+		Map<Recipe, Double> userRecipesSimilarities = recipesSimilaritiesCalculator.calculate2(ctx, userHistoryRecipesIngredients, possibleRecipesIngredientsMatrice);
 		
 		
 		

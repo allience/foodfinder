@@ -20,7 +20,7 @@ public class UserBasedMain {
 
 	public static void main(String[] args) {
 		
-		/*TestData testData = new TestData();
+		TestData testData = new TestData();
 		
 		//get our test user
 		User user = testData.GetTestUser();
@@ -35,17 +35,17 @@ public class UserBasedMain {
 		
 		RecipesService recipesSrv = new RecipesService();
 		
-		List<Integer> recipeIds = recipesSrv.GetRcipesByIngredients(dbContext, userIngredients, false);
-		List<Recipe> recipes = new ArrayList<Recipe>();
-		for (int recipeId : recipeIds) {
+		//List<Integer> recipeIds = recipesSrv.GetRecipesByIngredients(dbContext, userIngredients, false);
+		List<Recipe> recipes = recipesSrv.GetRecipesByIngredients(dbContext, userIngredients, false);
+		/*for (int recipeId : recipeIds) {
 			recipes.add(new Recipe(recipeId));
-		}
+		}*/
 		
 		dbContext.dispose();
 		
 		UserBasedRecommender userBasedRecommender = new UserBasedRecommender();
 		userBasedRecommender.recommend(user, recipes);
-		*/
+		
 
 	}
 

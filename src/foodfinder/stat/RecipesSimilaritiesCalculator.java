@@ -9,6 +9,7 @@ import java.util.Map.Entry;
 import foodfinder.data.DbContext;
 import foodfinder.data.FoodFinderDbMatrices;
 import foodfinder.data.Recipe;
+import foodfinder.data.RecipesService;
 
 
 public class RecipesSimilaritiesCalculator {
@@ -37,8 +38,9 @@ public class RecipesSimilaritiesCalculator {
 						cols,
 						condition
 				);
+				
 				x[index] = (double) result.get(0).get("correlation");
-				System.out.println(x[index]);
+				//System.out.println(x[index]);
 				
 				//fill Db
 				/*List<Object> values = new ArrayList<Object>();
@@ -62,4 +64,46 @@ public class RecipesSimilaritiesCalculator {
 		
 		return userRecipesSimilarities;
 	}
+	
+	
+	public Map<Recipe, Double> calculate2(DbContext ctx, Map<Integer, Map<String, Integer>> userHistory, Map<Integer, Map<String, Integer>> recipesIngredients) {
+		
+		Map<Recipe, Double> userRecipesSimilarities = new HashMap<Recipe, Double>();
+		
+		RecipesService recipesSrv = new RecipesService();
+		
+		Map<Integer, Map<Integer, Double>> allSimilarities = recipesSrv.getAllSimilarities(ctx, true);
+		
+		//go through all possible recipes (those that have at least 1 asked ingredient
+		for(Entry<Integer, Map<String, Integer>> recipe : recipesIngredients.entrySet()) {
+			
+			int recipeId = recipe.getKey();
+			double accumulation = 0.0;
+			int n = 0;
+			
+			Map<Integer, Double> recipeSimilarity = allSimilarities.get(recipeId);
+			
+			for(Entry<Integer, Map<String, Integer>> historyRecipe : userHistory.entrySet()) {
+				
+				int userRecipeId = historyRecipe.getKey();
+				
+				if (!recipeSimilarity.containsKey(userRecipeId))
+					continue;
+				
+				accumulation += recipeSimilarity.get(userRecipeId);
+				n++;
+			}
+			
+			double average = n > 0 ? accumulation / n : 0.0;
+			
+			userRecipesSimilarities.put(new Recipe(recipeId), average);
+		}
+		
+		
+		return userRecipesSimilarities;
+		
+	}
+	
+	
+	
 }
