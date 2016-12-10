@@ -49,6 +49,11 @@ public class TestData {
 		return recipeService.GetUserHistory(dbContext, userId);
 	}
 	
+	public List<Recipe> GetRcipesByIngredients(){
+		dbContext = new DbContext(server, dataDb, username, password);
+		return recipeService.GetRecipesByIngredients(dbContext, GetTestUserIngredients(), false);
+	}
+	
 	//returns ingredient ids, not auto increment ids
 	public List<Ingredient> GetTestUserIngredients(){
 		dbContext = new DbContext(server, dataDb, username, password);
@@ -57,6 +62,11 @@ public class TestData {
 		ingredients.add("Potato");
 		ingredients.add("Tomato");
 		return recipeService.GetIngredients(dbContext, ingredients);
+	}
+	
+	public List<RecipeDetails> GetRecipesDetailsFromRecipes(Map<Recipe, Double> recipes){
+		dbContext = new DbContext(server, dataDb, username, password);
+		return recipeService.GetRecipesById(dbContext, recipes);
 	}
 	
 }

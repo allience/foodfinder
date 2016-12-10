@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 public class RecipesService {
 	
@@ -45,15 +46,15 @@ public class RecipesService {
 		ArrayList<Ingredient> ingredientsList = new ArrayList<Ingredient>();
 		for(Map<String, Object> item : ingredientsResultList){
 			Ingredient ingredient = new Ingredient();
-			ingredient.setId((Integer)item.get("ingred_id"));
+			ingredient.setId((Integer)item.get("id"));
 			ingredientsList.add(ingredient);
 		}
 		return ingredientsList;
 	}
 	
 	//call with IsExact->false to get all recipes that got at least 1 ingredient of the userIngredients
-	public List<Integer> GetRcipesByIngredients(DbContext recommenderDbCtx, List<Ingredient> userIngredients, boolean isExact){
-		ArrayList<Integer> recipes = new ArrayList<Integer>();
+	public List<Recipe> GetRecipesByIngredients(DbContext recommenderDbCtx, List<Ingredient> userIngredients, boolean isExact){
+		ArrayList<Recipe> recipes = new ArrayList<Recipe>();
 		String logicalOperator = isExact ? " AND " : " OR ";
 		List<String> cols = new ArrayList<String>();
 		cols.add("recipe_id");
@@ -63,7 +64,6 @@ public class RecipesService {
 			condition += "ingredient_id = " + userIngredients.get(i).getId();
 			condition += (i < userIngredients.size() - 1) ? logicalOperator : "";
 		}
-		condition += " GROUP BY recipe_id";
 		
 		List<Map<String, Object>> resultList = recommenderDbCtx.selectQuery(
 				FoodFinderDb.Recipes_Ingredients,
@@ -73,7 +73,7 @@ public class RecipesService {
 		
 		for(Map<String, Object> item : resultList){
 			int recipeId = toIntExact((Long)item.get("recipe_id"));
-			recipes.add(recipeId);
+			recipes.add(new Recipe(recipeId));
 		}
 		
 		return recipes;
@@ -81,12 +81,16 @@ public class RecipesService {
 	
 	
 	//returns recipeId, numberOfIngredients
-	public Map<Integer, Integer> GetNumberOfIngredientsPerRecipe(DbContext recommenderDbCtx, List<Integer> recipes){
+	public Map<Integer, Integer> GetNumberOfIngredientsPerRecipe(DbContext recommenderDbCtx, List<Recipe> recipes){
 		HashMap<Integer, Integer> ingredientsPerRecipe = new HashMap<Integer, Integer>();
-		
+		String condition = "(";
+		for(int i = 0; i<recipes.size(); i++){
+			condition += ""+recipes.get(i).getId();
+			condition += (i < recipes.size() - 1) ? ", " : ")";
+		}
 		List<Map<String, Object>> result = recommenderDbCtx.CustomQuery(
 				"SELECT recipe_id, count(ingredient_id) as nbIngredients"
-				+ " from recipes_ingredients group by recipe_id");
+				+ " FROM recipes_ingredients WHERE recipe_id in "+ condition +" GROUP BY recipe_id");
 		
 		for(Map<String, Object> rslt : result){
 			int recipeId = toIntExact((Long)rslt.get("recipe_id"));
@@ -95,5 +99,33 @@ public class RecipesService {
 		}
 		
 		return ingredientsPerRecipe;
+	}
+	
+	
+	public List<RecipeDetails> GetRecipesById(DbContext recommenderDbCtx, Map<Recipe, Double> recipes){
+		List<RecipeDetails> recipesDetails = new ArrayList<RecipeDetails>();
+		
+		List<String> cols = new ArrayList<String>();
+		cols.add("id");
+		cols.add("title");
+		
+		for(Entry<Recipe, Double> recipe : recipes.entrySet()){
+			String condition = "`id` = " + recipe.getKey().getId();
+			
+			List<Map<String, Object>> resultList = recommenderDbCtx.selectQuery(
+					FoodFinderDb.Recipes,
+					cols,
+					condition
+			);
+			
+			RecipeDetails recipeDet = new RecipeDetails();
+			for(Map<String, Object> rslt : resultList){
+				recipeDet.id = toIntExact((Long)rslt.get("id"));
+				recipeDet.title = rslt.get("title").toString();
+			}
+			recipesDetails.add(recipeDet);
+		}
+		
+		return recipesDetails;
 	}
 }

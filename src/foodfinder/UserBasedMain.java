@@ -20,7 +20,7 @@ public class UserBasedMain {
 
 	public static void main(String[] args) {
 		
-		TestData testData = new TestData();
+		/*TestData testData = new TestData();
 		
 		//get our test user
 		User user = testData.GetTestUser();
@@ -45,7 +45,7 @@ public class UserBasedMain {
 		
 		UserBasedRecommender userBasedRecommender = new UserBasedRecommender();
 		userBasedRecommender.recommend(user, recipes);
-		
+		*/
 
 	}
 
